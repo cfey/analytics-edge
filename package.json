@@ -26,5 +26,6 @@
     "prettier": "^2.5.1",
     "turbo": "latest"
   },
-  "packageManager": "yarn@3.4.1"
+  "packageManager": "yarn@4.5.3",
+  "name": "analytics-edge"
 }
