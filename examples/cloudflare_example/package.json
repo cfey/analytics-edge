@@ -5,11 +5,11 @@
     "@segment/edge-sdk": "*"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^3.16.0",
+    "@cloudflare/workers-types": "^4.20241218.0",
     "@segment/eslint-config-edge-sdk": "*",
     "@segment/tsconfig-edge-sdk": "*",
-    "typescript": "^4.8.3",
-    "wrangler": "2.1.4"
+    "typescript": "^5.5.2",
+    "wrangler": "^3.60.3"
   },
   "private": true,
   "scripts": {
