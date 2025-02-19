@@ -22,9 +22,9 @@ To run as a full reverse proxy, you have to deploy your worker using [Routes](ht
 
 ✋ As a pre-requisit, you need to sign-up for a Cloudflare account, and add your domain to Cloudflare so that Cloudflare is able to resolve your domain. Use [these instructions](<https://developers.cloudflare.com/learning-paths/get-started/#domain-resolution-(active-website)>) to setup your website with Cloudflare.
 
-1- Follow the [Get Started Guide](https://developers.cloudflare.com/workers/get-started/guide/) to setup a basic Cloudflare worker using Wrangler, and by choosing the default options offered by Wrangler during the setup. After the setup, you should have a directory, with a "Hello World" worker setup.
+1. Follow the [Get Started Guide](https://developers.cloudflare.com/workers/get-started/guide/) to setup a basic Cloudflare worker using Wrangler, and by choosing the default options offered by Wrangler during the setup. After the setup, you should have a directory, with a "Hello World" worker setup.
 
-2- Install the Segment Edge SDK in your worker project
+2. Install the Segment Edge SDK in your worker project
 
 ```
 yarn add @segment/edge-sdk
@@ -32,7 +32,7 @@ or
 npm install @segment/edge-sdk
 ```
 
-3- Update your worker code (`index.ts`) as follows:
+3. Update your worker code (`index.ts`) as follows:
 
 ```diff
 + import { Segment } from "@segment/edge-sdk";
@@ -60,7 +60,7 @@ export default {
 
 ```
 
-4- Update `wrangler.toml` file so that the worker intercepts requests to the website:
+4. Update `wrangler.toml` file so that the worker intercepts requests to the website:
 
 ```diff
 name = '...'
@@ -69,7 +69,7 @@ main = "src/index.ts"
 + route = "www.your_website.com/*"
 ```
 
-5- Deploy the worker
+5. Deploy the worker
 
 ```
 wrangler publish
@@ -82,8 +82,8 @@ wrangler publish
 This approach runs the worker on a sub-domain of yours, and the worker will only be responsible for first-party delivery of AJS, and delivering client-side traits. But the worker will not intercept individual pages on your main domain, and therefore features such as Personalization or Automatic AJS Injection won't be available.
 
 To run the worker on a sub-domain, you can deploy your worker using these instructions:
-1- Follow steps 1-3 from the previous section
-2- Update `wrangler.toml` file so that the worker is setup on a sub-domain in your zone
+1. Follow steps 1-3 from the previous section
+2. Update `wrangler.toml` file so that the worker is setup on a sub-domain in your zone
 
 ```diff
 name = '...'
@@ -94,7 +94,7 @@ main = "src/index.ts"
 + ]
 ```
 
-3- Modify the worker code to turn-off full proxy features:
+3. Modify the worker code to turn-off full proxy features:
 
 ```diff
     const segment = new Segment(
@@ -113,7 +113,7 @@ main = "src/index.ts"
 
 ```
 
-4- Since the automatic AJS injection is not available, you have to add Segment snippet to your website manually. Make sure to modify the standard snippet so it points to your first-party domain:
+4. Since the automatic AJS injection is not available, you have to add Segment snippet to your website manually. Make sure to modify the standard snippet so it points to your first-party domain:
 
 ```diff
 - t.src="https://cdn.segment.com/analytics.js/v1/" + key + "/analytics.min.js";
@@ -124,7 +124,7 @@ main = "src/index.ts"
 
 You can setup Edge Storage to store profiles on Edge and use them for personalization or client-side traits feature. Follow these steps:
 
-1- Setup Cloudflare KV for Profiles Database
+1. Setup Cloudflare KV for Profiles Database
 
 - Setup a KV using [these instructions](https://developers.cloudflare.com/workers/wrangler/workers-kv/#create-a-kv-namespace-with-wrangler)
 - Update your worker code as follows:
@@ -158,7 +158,7 @@ export default {
 };
 ```
 
-2- Setup Profiles Sync, using both or one of the sync approaches explained in the next couple of sections.
+2. Setup Profiles Sync, using both or one of the sync approaches explained in the next couple of sections.
 
 ### Configure Profiles API Access
 
@@ -168,7 +168,7 @@ Edge SDK can query Twilio Segment Profiles API to look for those profiles missin
 
 You can also configure a webhook for Twilio Engage to call in order to sync user traits to the Edge database. Follow these steps for configure your webhook:
 
-1- Initialize SDK with a webhook username and password
+1. Initialize SDK with a webhook username and password
 
 ```diff
     const segment = new Segment(
@@ -184,11 +184,11 @@ You can also configure a webhook for Twilio Engage to call in order to sync user
     );
 ```
 
-2- Goto your Segment workspace in `app.segment.com` and visit `Engage>Engage Settings` page
-3- Click on "+ Add Destination"
-4- Choose "Webhook" and connect it to your Personas source
-5- In the destination settings configure your Webhook URL as the URL of your website that runs the Edge SDK with following format `https://your_first_party_url/<routePrefix>/personas` and then add a `Authorization` header with the value of `Basic <base64 encoded value of username:password>`.
-6- Go to each of your Audiences that you like to sync with Edge, connect your webhook destination to the Audience, and make sure the destination is configured with "Send Identify".
+2. Goto your Segment workspace in `app.segment.com` and visit `Engage>Engage Settings` page
+3. Click on "+ Add Destination"
+4. Choose "Webhook" and connect it to your Personas source
+5. In the destination settings configure your Webhook URL as the URL of your website that runs the Edge SDK with following format `https://your_first_party_url/<routePrefix>/personas` and then add a `Authorization` header with the value of `Basic <base64 encoded value of username:password>`.
+6. Go to each of your Audiences that you like to sync with Edge, connect your webhook destination to the Audience, and make sure the destination is configured with "Send Identify".
 
 🎉 You are all set. Twilio Engage will start syncing your audiences with your worker!
 
